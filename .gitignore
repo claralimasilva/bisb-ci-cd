@@ -1,0 +1,84 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.venv*/
+venv*/
+env*/
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Unit test / coverage reports
+.coverage
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+.cache/
+nosetests.xml
+junit.xml
+test-results/
+pytest_cache/
+
+# ---- Logs and temp files ----
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# ---- IDEs and editors ----
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# ---- GitHub Actions / CI ----
+# (keeps workflows but ignores temporary outputs)
+.github/*/tmp/
+.github/*/logs/
+.github/*/cache/
+
+# ---- Flask specific ----
+instance/
+*.db
+*.sqlite3
+*.sqlite
+__pycache__/
+
+# ---- Others ----
+.env
+*.env
+.env.*
+.envrc
