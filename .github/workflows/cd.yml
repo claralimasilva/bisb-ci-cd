@@ -1,0 +1,74 @@
+name: CD - Deploy AWS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Notify Discord - Deploy Started
+      uses: sarisia/actions-status-discord@v1
+      with:
+        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        title: "Deploy AWS Started"
+        description: |
+          Ambiente: Produção (AWS)
+          Versão: ${{ github.sha }}
+          Autor: ${{ github.actor }}
+    
+    - name: Deploy to AWS EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        script: |
+          cd ${{ secrets.DEPLOY_PATH }}
+          
+          # Fazer pull do código
+          git pull origin main
+          
+          # Parar containers antigos
+          docker-compose down || true
+          
+          # Fazer build e iniciar novos containers
+          docker-compose up --build -d
+          
+          # Aguardar aplicação iniciar
+          sleep 10
+          
+          # Verificar health check
+          if curl -f http://localhost:5000/health; then
+            echo "Health check passed!"
+          else
+            echo "Health check failed!"
+            exit 1
+          fi
+    
+    - name: Notify Discord - Deploy Success
+      if: success()
+      uses: sarisia/actions-status-discord@v1
+      with:
+        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        title: "Deploy AWS Successfully Deployed"
+        description: |
+          Ambiente: Produção
+          URL: http://${{ secrets.DEPLOY_HOST }}:5000
+          Versão: ${{ github.sha }}
+          Status: Online ✓
+    
+    - name: Notify Discord - Deploy Failed
+      if: failure()
+      uses: sarisia/actions-status-discord@v1
+      with:
+        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        title: "Deploy AWS Failed"
+        description: |
+          Ambiente: Produção
+          Versão: ${{ github.sha }}
+          Erro: Verifique os logs do GitHub Actions

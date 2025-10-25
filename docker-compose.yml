@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  bisb-api:
+    build: .
+    container_name: bisb-api
+    ports:
+      - "5000:5000"
+    restart: always
