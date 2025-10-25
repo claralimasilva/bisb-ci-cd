@@ -15,6 +15,7 @@ jobs:
       uses: sarisia/actions-status-discord@v1
       with:
         webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        status: ${{ job.status }}
         title: "Deploy AWS Started"
         description: |
           Ambiente: Produção (AWS)
@@ -54,21 +55,18 @@ jobs:
       if: success()
       uses: sarisia/actions-status-discord@v1
       with:
-        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        title: "Deploy AWS Successfully Deployed"
-        description: |
-          Ambiente: Produção
-          URL: http://${{ secrets.DEPLOY_HOST }}:5000
-          Versão: ${{ github.sha }}
-          Status: Online ✓
-    
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          status: success
+          title: "Deploy to AWS EC2 - Success"
+          description: "BISB API deployed successfully to AWS EC2"
+
     - name: Notify Discord - Deploy Failed
       if: failure()
       uses: sarisia/actions-status-discord@v1
       with:
-        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        title: "Deploy AWS Failed"
-        description: |
-          Ambiente: Produção
-          Versão: ${{ github.sha }}
-          Erro: Verifique os logs do GitHub Actions
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          status: failure
+          title: "Deploy to AWS EC2 - Failed"
+          description: "BISB API deployment failed"
+
+    
