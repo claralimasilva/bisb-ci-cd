@@ -7,7 +7,7 @@ def test_health_endpoint_returns_ok():
 
     assert response.status_code == 200
     data = response.get_json()
-    assert data == {"status": "ok"}
+    assert data == {"status": "a Archon Systems manda alora"}
 
 
 def test_average_ticket_endpoint_success():
